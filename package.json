@@ -1,0 +1,24 @@
+{
+  "name": "holepunch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prettier": "prettier --write --config .prettierrc.json \"**/*.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "b4a": "^1.6.1",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "graceful-goodbye": "^1.2.0",
+    "hyperswarm": "^4.3.7",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.33.0",
+    "prettier": "2.8.3"
+  }
+}
+
