@@ -1,0 +1,20 @@
+{
+  "name": "chat_app_gui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "b4a": "^1.6.1",
+    "dotenv": "^16.0.3",
+    "electron": "^22.1.0",
+    "graceful-goodbye": "^1.2.0",
+    "hypercore-crypto": "^3.3.1",
+    "hyperswarm": "^4.3.7"
+  }
+}
+
