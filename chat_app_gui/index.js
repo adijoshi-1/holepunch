@@ -1,20 +1,53 @@
 /* eslint-disable no-undef */
 
+require('dotenv').config()
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const joinTopic = require('./config/peer')
+const Hyperswarm = require('hyperswarm')
+const b4a = require('b4a')
+const goodbye = require('graceful-goodbye')
 
-const displayWindow = () => {
-  const mainWindow = new BrowserWindow({
+const topic = b4a.from(process.env.TOPIC, 'hex')
+const swarm = new Hyperswarm()
+const discovery = swarm.join(topic, { client: true, server: true })
+
+const conns = []
+
+goodbye(() => swarm.destroy())
+
+const mainWindow = () => {
+  const window = new BrowserWindow({
     webPreferences: {
       preload: path.join(__dirname) + '/middleware/preload.js',
     },
   })
-  mainWindow.loadFile(path.join(__dirname) + '/pages/index.html')
+
+  swarm.on('connection', (conn) => {
+    const name = b4a.toString(conn.remotePublicKey, 'hex')
+    console.log('* got a connection from:', name, '*')
+    conns.push(conn)
+    conn.once('close', () => conns.splice(conns.indexOf(conn), 1))
+    conn.on('data', (data) => {
+      console.log('data', data)
+      window.webContents.send('message:received', b4a.toString(data, 'utf-8'))
+    })
+  })
+
+  ipcMain.on('message:send', (event, message) => {
+    for (const conn of conns) {
+      conn.write(message)
+    }
+  })
+
+  ipcMain.on('message:send', (event, message) =>
+    window.webContents.send('update-counter', message)
+  )
+  window.loadFile(path.join(__dirname) + '/pages/index.html')
 }
 
-app.whenReady().then(() => {
-  displayWindow()
-  ipcMain.on('test', (event, d) => console.log(d))
-  joinTopic()
+app.whenReady().then(async () => {
+  await discovery.flushed().then(() => {
+    console.log('Connected to topic:', b4a.toString(topic, 'hex'))
+  })
+  mainWindow()
 })

@@ -1,7 +1,10 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('test', {
-  test: (data) => {
-    ipcRenderer.send('test', data)
+contextBridge.exposeInMainWorld('customApi', {
+  sendMessage: (message) => {
+    ipcRenderer.send('message:send', message)
+  },
+  handleMessages: (callback) => {
+    ipcRenderer.on('message:received', callback)
   },
 })

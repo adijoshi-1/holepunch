@@ -14,7 +14,7 @@
     "electron": "^22.1.0",
     "graceful-goodbye": "^1.2.0",
     "hypercore-crypto": "^3.3.1",
-    "hyperswarm": "^4.3.7"
+    "hyperswarm": "^4.3.7",
+    "path": "^0.12.7"
   }
 }
-
