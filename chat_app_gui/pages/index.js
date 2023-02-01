@@ -5,10 +5,10 @@ const msgerInput = get('.msger-input')
 const msgerChat = get('.msger-chat')
 
 // Icons made by Freepik from www.flaticon.com
-const BOT_IMG = 'https://image.flaticon.com/icons/svg/327/327779.svg'
-const PERSON_IMG = 'https://image.flaticon.com/icons/svg/145/145867.svg'
-const BOT_NAME = 'Receiver'
-const PERSON_NAME = 'Sender'
+const BOT_IMG = 'https://avatarfiles.alphacoders.com/893/thumb-89303.gif'
+const PERSON_IMG =
+  'https://cdn.pixabay.com/photo/2016/08/20/05/38/avatar-1606916__340.png'
+const PERSON_NAME = 'You'
 
 msgerForm.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -43,8 +43,9 @@ function appendMessage(name, img, side, text) {
   msgerChat.scrollTop += 500
 }
 
-window.customApi.handleMessages((event, message) => {
-  appendMessage(BOT_NAME, BOT_IMG, 'left', message)
+window.customApi.handleMessages((event, name, message) => {
+  console.log(name, message)
+  appendMessage(`${name.slice(0, 7)}.....`, BOT_IMG, 'left', message)
 })
 
 // Utils

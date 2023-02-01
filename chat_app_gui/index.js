@@ -24,12 +24,15 @@ const mainWindow = () => {
 
   swarm.on('connection', (conn) => {
     const name = b4a.toString(conn.remotePublicKey, 'hex')
-    console.log('* got a connection from:', name, '*')
+    console.log('*Got Connection:', name, '*')
     conns.push(conn)
     conn.once('close', () => conns.splice(conns.indexOf(conn), 1))
     conn.on('data', (data) => {
-      console.log('data', data)
-      window.webContents.send('message:received', b4a.toString(data, 'utf-8'))
+      window.webContents.send(
+        'message:received',
+        name,
+        b4a.toString(data, 'utf-8')
+      )
     })
   })
 
@@ -46,8 +49,6 @@ const mainWindow = () => {
 }
 
 app.whenReady().then(async () => {
-  await discovery.flushed().then(() => {
-    console.log('Connected to topic:', b4a.toString(topic, 'hex'))
-  })
+  await discovery.flushed()
   mainWindow()
 })
