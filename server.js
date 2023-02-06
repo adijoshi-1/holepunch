@@ -1,34 +1,26 @@
 /* eslint-disable no-undef */
 
 require('dotenv').config()
-const DHT = require('@hyperswarm/dht')
-const b4a = require('b4a')
-const goodbye = require('graceful-goodbye')
-const fs = require('fs')
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const morgan = require('morgan')
 const path = require('path')
 
-const publicKey = b4a.from(process.env.PUBLIC_KEY, 'hex')
-const secretKey = b4a.from(process.env.SECRET_KEY, 'hex')
-const keyPair = { publicKey, secretKey }
+const PORT = process.env.PORT
+const app = express()
 
-const writeToFile = (data) => {
-  fs.appendFile(path.join(__dirname) + '/file.txt', data, {}, (err) => {
-    if (err) {
-      console.log(err)
-    }
-  })
-}
+app.use(bodyParser.json({ limit: '20mb' }))
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
+app.use(cors())
+app.use(morgan('dev'))
 
-const dht = new DHT()
-const server = dht.createServer((conn) => {
-  console.log('Recevied Connection')
-  conn.on('data', (data) => {
-    writeToFile(b4a.toString(data, 'utf-8'))
-  })
+app.get('/', (req, res) =>
+  res.status(200).sendFile(path.join(__dirname) + '/pages/index.html')
+)
+app.use(require('./app/routes'))
+
+const server = app.listen(PORT, () => {
+  const port = server.address().port
+  console.log('Chat application server running at port:', port)
 })
-
-server.listen(keyPair).then(() => {
-  console.log('Server Running: ', b4a.toString(publicKey, 'hex'))
-})
-
-goodbye(() => server.close())

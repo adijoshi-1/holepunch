@@ -2,19 +2,31 @@
   "name": "holepunch",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "prettier": "prettier --write --config .prettierrc.json \"**/*.js\""
+    "prettier": "prettier --write --config .prettierrc.json \"**/*.js\"",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adijoshi-1/holepunch.git"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adijoshi-1/holepunch/issues"
+  },
+  "homepage": "https://github.com/adijoshi-1/holepunch#readme",
   "dependencies": {
-    "b4a": "^1.6.1",
+    "body-parser": "^1.20.1",
+    "corestore": "^6.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "fs": "^0.0.1-security",
-    "graceful-goodbye": "^1.2.0",
-    "hypercore-crypto": "^3.3.1",
-    "hyperswarm": "^4.3.7",
+    "hyperdrive": "^11.0.0-alpha.10",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20",
     "path": "^0.12.7"
   },
   "devDependencies": {
