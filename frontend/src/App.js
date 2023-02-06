@@ -122,8 +122,18 @@ export const App = () => {
       <header className="msger-header">
         <div className="msger-header-title">Chat Application</div>
         <div className="msger-header-options">
-          <span>
-            <i className="fas fa-cog"></i>
+          <span className="dropdown">
+            <i
+              className="fas fa-plus"
+              style={{ cursor: 'pointer' }}
+              onClick={(e) => {
+                e.preventDefault()
+              }}
+            ></i>
+            <div className="dropdown-content">
+              <p>Join Conversation</p>
+              <p>Create Conversation</p>
+            </div>
           </span>
         </div>
       </header>
